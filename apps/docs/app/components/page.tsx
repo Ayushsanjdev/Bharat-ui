@@ -7,11 +7,13 @@ import { AmountInput } from "@bharat-ui/react/AmountInput";
 import { OTPInput } from "@bharat-ui/react/OTPInput";
 import { PANInput } from "@bharat-ui/react/PANInput";
 import { PincodeInput } from "@bharat-ui/react/PincodeInput";
+import { IFSCInput } from "@bharat-ui/react/IFSCInput";
 import { UPIButton } from "@bharat-ui/react/UPIButton";
+import { bundledPincodeResolver, bundledIFSCResolver } from "@bharat-ui/react/resolvers";
 
 type PropRow = { name: string; type: string; default: string; desc: string };
 
-const PROP_TABLES: Record<"AmountInput" | "OTPInput" | "PANInput" | "PincodeInput" | "UPIButton", PropRow[]> = {
+const PROP_TABLES: Record<"AmountInput" | "OTPInput" | "PANInput" | "PincodeInput" | "IFSCInput" | "UPIButton", PropRow[]> = {
   AmountInput: [
     { name: "value", type: "number | undefined", default: "undefined", desc: "Controlled raw numeric value." },
     { name: "onChange", type: "(raw: number, formatted: string) => void", default: "—", desc: "Called with raw number and formatted string on change." },
@@ -42,10 +44,20 @@ const PROP_TABLES: Record<"AmountInput" | "OTPInput" | "PANInput" | "PincodeInpu
   PincodeInput: [
     { name: "value", type: "string", default: '""', desc: "Controlled value." },
     { name: "onChange", type: "(value: string, valid: boolean) => void", default: "—", desc: "Called with the cleaned value and validity on every keystroke." },
+    { name: "resolver", type: "PincodeResolver", default: "—", desc: "Async function that returns district/state/zone for a valid pincode. Import bundledPincodeResolver or supply your own API-backed function." },
     { name: "label", type: "string", default: "—", desc: "Label shown above the input." },
     { name: "error", type: "string", default: "—", desc: "Error message shown below the input." },
     { name: "disabled", type: "boolean", default: "false", desc: "Disables the input." },
-    { name: "showCascade", type: "boolean", default: "true", desc: "Shows resolved district and state below the input on valid pincode." },
+    { name: "showCascade", type: "boolean", default: "true", desc: "Shows the resolver result below the input when a valid pincode is entered." },
+  ],
+  IFSCInput: [
+    { name: "value", type: "string", default: '""', desc: "Controlled value." },
+    { name: "onChange", type: "(value: string, valid: boolean) => void", default: "—", desc: "Called with the uppercased value and validity on every keystroke." },
+    { name: "resolver", type: "IFSCResolver", default: "—", desc: "Async function that returns bank/branch metadata for a valid IFSC. Import bundledIFSCResolver or supply your own API-backed function." },
+    { name: "label", type: "string", default: "—", desc: "Label shown above the input." },
+    { name: "error", type: "string", default: "—", desc: "Error message shown below the input." },
+    { name: "disabled", type: "boolean", default: "false", desc: "Disables the input." },
+    { name: "showDetails", type: "boolean", default: "true", desc: "Shows the resolver result (bank, branch, city) below the input on valid IFSC." },
   ],
   UPIButton: [
     { name: "vpa", type: "string", default: "—", desc: "Merchant Virtual Payment Address, e.g. merchant@okaxis." },
@@ -107,6 +119,7 @@ export default function ComponentsPage() {
   const [pan, setPan] = React.useState("");
   const [pan2, setPan2] = React.useState("ABCPE1234F");
   const [pincode, setPincode] = React.useState("");
+  const [ifsc, setIfsc] = React.useState("");
   const [amount, setAmount] = React.useState<number | undefined>();
 
   return (
@@ -185,17 +198,34 @@ export default function ComponentsPage() {
           <section id="PincodeInput">
             <SectionHeader name="PincodeInput" />
             <p style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.7, marginBottom: 24 }}>
-              Numeric input that looks up the 6-digit pincode in the India Post dataset and shows the resolved district and state below the field on valid input — no network calls.
+              Numeric input that validates a 6-digit pincode and resolves district/state/zone via the <code style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--accent)" }}>resolver</code> prop. Pass <code style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--accent)" }}>bundledPincodeResolver</code> for offline lookup or supply your own API function for full coverage.
             </p>
             <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 12 }}>
-              <DemoCard label="// empty — type a pincode">
-                <PincodeInput label="Pincode" value={pincode} onChange={(v) => setPincode(v)} />
+              <DemoCard label="// bundled resolver">
+                <PincodeInput label="Pincode" value={pincode} onChange={(v) => setPincode(v)} resolver={bundledPincodeResolver} />
               </DemoCard>
               <DemoCard label="// pre-filled: 390001 (Vadodara)">
-                <PincodeInput label="Pincode" value="390001" onChange={() => {}} />
+                <PincodeInput label="Pincode" value="390001" onChange={() => {}} resolver={bundledPincodeResolver} />
               </DemoCard>
             </div>
             <PropTable rows={PROP_TABLES.PincodeInput} />
+          </section>
+
+          {/* IFSCInput */}
+          <section id="IFSCInput">
+            <SectionHeader name="IFSCInput" />
+            <p style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.7, marginBottom: 24 }}>
+              Text input that validates IFSC format and resolves bank/branch details via the <code style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--accent)" }}>resolver</code> prop. Pass <code style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--accent)" }}>bundledIFSCResolver</code> for offline lookup or supply your own API function for full coverage.
+            </p>
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 12 }}>
+              <DemoCard label="// bundled resolver — type an IFSC">
+                <IFSCInput label="IFSC code" value={ifsc} onChange={(v) => setIfsc(v)} resolver={bundledIFSCResolver} />
+              </DemoCard>
+              <DemoCard label="// pre-filled: SBIN0000300 (SBI Mumbai)">
+                <IFSCInput label="IFSC code" value="SBIN0000300" onChange={() => {}} resolver={bundledIFSCResolver} />
+              </DemoCard>
+            </div>
+            <PropTable rows={PROP_TABLES.IFSCInput} />
           </section>
 
           {/* UPIButton */}

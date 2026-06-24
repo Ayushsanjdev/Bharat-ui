@@ -15,7 +15,9 @@ import { AmountInput } from "@bharat-ui/react/AmountInput";
 import { OTPInput } from "@bharat-ui/react/OTPInput";
 import { PANInput } from "@bharat-ui/react/PANInput";
 import { PincodeInput } from "@bharat-ui/react/PincodeInput";
+import { IFSCInput } from "@bharat-ui/react/IFSCInput";
 import { UPIButton } from "@bharat-ui/react/UPIButton";
+import { bundledPincodeResolver, bundledIFSCResolver } from "@bharat-ui/react/resolvers";
 
 // ── Validators tab ──────────────────────────────────────────────
 
@@ -151,7 +153,7 @@ function ValidatorsTab() {
 
 // ── Components tab ──────────────────────────────────────────────
 
-const COMPONENT_OPTIONS = ["PANInput", "PincodeInput", "AmountInput", "OTPInput", "UPIButton"] as const;
+const COMPONENT_OPTIONS = ["PANInput", "PincodeInput", "IFSCInput", "AmountInput", "OTPInput", "UPIButton"] as const;
 type ComponentName = typeof COMPONENT_OPTIONS[number];
 
 function ComponentsTab() {
@@ -161,6 +163,8 @@ function ComponentsTab() {
   const [panValid, setPanValid] = React.useState(false);
   const [pincode, setPincode] = React.useState("");
   const [pincodeValid, setPincodeValid] = React.useState(false);
+  const [ifsc, setIfsc] = React.useState("");
+  const [ifscValid, setIfscValid] = React.useState(false);
   const [amount, setAmount] = React.useState<number | undefined>();
   const [lastEvent, setLastEvent] = React.useState<string>("—");
 
@@ -183,9 +187,23 @@ function ComponentsTab() {
           <PincodeInput
             label="Pincode"
             value={pincode}
+            resolver={bundledPincodeResolver}
             onChange={(v, valid) => {
               setPincode(v);
               setPincodeValid(valid);
+              setLastEvent(`onChange("${v}", ${valid})`);
+            }}
+          />
+        );
+      case "IFSCInput":
+        return (
+          <IFSCInput
+            label="IFSC code"
+            value={ifsc}
+            resolver={bundledIFSCResolver}
+            onChange={(v, valid) => {
+              setIfsc(v);
+              setIfscValid(valid);
               setLastEvent(`onChange("${v}", ${valid})`);
             }}
           />
@@ -236,6 +254,10 @@ function ComponentsTab() {
     ...(selected === "PincodeInput" ? [
       { label: "value", value: `"${pincode}"`, color: "var(--text)" },
       { label: "valid", value: String(pincodeValid), color: pincodeValid ? "#86EFAC" : "#F87171" },
+    ] : []),
+    ...(selected === "IFSCInput" ? [
+      { label: "value", value: `"${ifsc}"`, color: "var(--text)" },
+      { label: "valid", value: String(ifscValid), color: ifscValid ? "#86EFAC" : "#F87171" },
     ] : []),
     ...(selected === "AmountInput" || selected === "UPIButton" ? [
       { label: "amount", value: amount !== undefined ? String(amount) : "undefined", color: "#93C5FD" },

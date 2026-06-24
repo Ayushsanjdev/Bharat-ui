@@ -6,6 +6,7 @@ import { OTPInput } from "@bharat-ui/react/OTPInput";
 import { PANInput } from "@bharat-ui/react/PANInput";
 import { PincodeInput } from "@bharat-ui/react/PincodeInput";
 import { UPIButton } from "@bharat-ui/react/UPIButton";
+import { bundledPincodeResolver } from "@bharat-ui/react/resolvers";
 import { useIsMobile } from "./useIsMobile";
 
 export function ComponentsSection() {
@@ -87,6 +88,7 @@ export function ComponentsSection() {
               label="Pincode"
               value={pincodeValue}
               onChange={(v) => setPincodeValue(v)}
+              resolver={bundledPincodeResolver}
             />
           </ComponentCard>
 

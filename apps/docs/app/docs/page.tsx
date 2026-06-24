@@ -14,8 +14,8 @@ const PACKAGES = [
   {
     name: "@bharat-ui/react",
     install: "npm install @bharat-ui/react",
-    desc: "React components that wire up the validators, handle formatting, and manage input state. Requires @bharat-ui/validators.",
-    exports: ["AmountInput", "OTPInput", "PANInput", "PincodeInput", "UPIButton"],
+    desc: "React components that wire up the validators, handle formatting, and manage input state. PincodeInput and IFSCInput accept a resolver prop — bring your own data source.",
+    exports: ["AmountInput", "OTPInput", "PANInput", "PincodeInput", "IFSCInput", "UPIButton"],
   },
 ];
 
@@ -62,33 +62,24 @@ const API = [
   {
     name: "validateIFSC",
     signature: "validateIFSC(ifsc: string): IFSCResult",
-    desc: "Validates an 11-character IFSC code against the bundled dataset of 259 branches across 17 major banks (SBI, HDFC, ICICI, Axis, PNB, BoB, Canara, Kotak and more). Returns full bank and branch metadata — no network calls.",
+    desc: "Validates the format of an 11-character IFSC code (4 letters + 0 + 6 alphanumeric). Pure format check — no dataset, no bundle cost. For bank and branch metadata use the resolver prop on <IFSCInput /> or bundledIFSCResolver from @bharat-ui/react/resolvers.",
     params: [
-      { name: "ifsc", type: "string", desc: "IFSC code. Case-insensitive." },
+      { name: "ifsc", type: "string", desc: "IFSC code. Case-insensitive; spaces stripped automatically." },
     ],
     returns: `{
   valid: boolean
   formatted: string         // "SBIN0001234" (empty string on failure)
   error?: string
-  meta?: {
-    code: string            // "SBIN0001234"
-    bank: string
-    branch: string
-    address: string
-    city: string
-    state: string
-    contact: string
-  }
 }`,
     example: {
-      input: 'validateIFSC("SBIN0001234")',
-      output: '{ valid: true, formatted: "SBIN0001234", bank: "State Bank of India", ... }',
+      input: 'validateIFSC("sbin0001234")',
+      output: '{ valid: true, formatted: "SBIN0001234" }',
     },
   },
   {
     name: "validatePincode",
     signature: "validatePincode(pincode: string): PincodeResult",
-    desc: "Validates a 6-digit Indian pincode against the bundled dataset of 711 pincodes covering all 28 states and key UTs. Returns district, state, zone and head post office — no network calls.",
+    desc: "Validates the format of a 6-digit Indian pincode — must be exactly 6 digits and must not start with 0. Pure format check — no dataset, no bundle cost. For district/state metadata use the resolver prop on <PincodeInput /> or bundledPincodeResolver from @bharat-ui/react/resolvers.",
     params: [
       { name: "pincode", type: "string", desc: "6-digit pincode." },
     ],
@@ -96,17 +87,10 @@ const API = [
   valid: boolean
   formatted: string         // "390001" (empty string on failure)
   error?: string
-  meta?: {
-    pincode: string
-    district: string
-    state: string
-    zone: string
-    headPO: string
-  }
 }`,
     example: {
       input: 'validatePincode("390001")',
-      output: '{ valid: true, formatted: "390001", meta: { pincode: "390001", district: "Vadodara", state: "Gujarat", zone: "Western", headPO: "Vadodara HO" } }',
+      output: '{ valid: true, formatted: "390001" }',
     },
   },
   {
@@ -321,6 +305,67 @@ formatINRCompact(1234567);  // "₹12.35L"`} />
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div style={{ borderTop: "0.5px solid var(--border)", marginTop: 80, marginBottom: 64 }} />
+
+        {/* Resolvers */}
+        <div>
+          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>
+            @bharat-ui/react/resolvers
+          </div>
+          <h2 style={{ fontSize: 18, fontWeight: 700, color: "var(--text)", marginBottom: 8, letterSpacing: "-0.01em" }}>
+            Resolvers
+          </h2>
+          <p style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.7, marginBottom: 32 }}>
+            PincodeInput and IFSCInput accept a <code style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--accent)" }}>resolver</code> prop — an async function that returns metadata for a given pincode or IFSC. You decide the data source.
+          </p>
+
+          <CodeBlock code={`import { bundledPincodeResolver, bundledIFSCResolver } from "@bharat-ui/react/resolvers";
+import { PincodeInput } from "@bharat-ui/react/PincodeInput";
+import { IFSCInput } from "@bharat-ui/react/IFSCInput";
+
+// Option 1 — bundled popular dataset (~8KB, covers major metros)
+<PincodeInput resolver={bundledPincodeResolver} />
+<IFSCInput    resolver={bundledIFSCResolver} />
+
+// Option 2 — your own API (full coverage, no bundle cost)
+<PincodeInput resolver={async (pin) => fetch(\`/api/pincode/\${pin}\`).then(r => r.json())} />
+<IFSCInput    resolver={async (ifsc) => fetch(\`/api/ifsc/\${ifsc}\`).then(r => r.json())} />
+
+// Option 3 — no resolver (format validation only, no cascade shown)
+<PincodeInput />`} />
+
+          <div style={{ marginTop: 32 }}>
+            <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-dim)", marginBottom: 10 }}>
+              Resolver types
+            </div>
+            <CodeBlock code={`type PincodeResolver = (pincode: string) => Promise<PincodeData | null>
+type IFSCResolver    = (ifsc: string)    => Promise<IFSCData | null>
+
+interface PincodeData {
+  state: string
+  zone?: string
+  district?: string
+  headPO?: string
+}
+
+interface IFSCData {
+  bank: string
+  branch?: string
+  city?: string
+  state?: string
+  address?: string
+  contact?: string
+}`} />
+          </div>
+
+          <div style={{ marginTop: 24, padding: "14px 16px", background: "var(--surface)", border: "0.5px solid var(--border)", borderRadius: 8 }}>
+            <p style={{ fontSize: 13, color: "var(--text-muted)", lineHeight: 1.7, margin: 0 }}>
+              <strong style={{ color: "var(--text)" }}>Bundle size:</strong> Importing <code style={{ fontFamily: "var(--font-mono)", fontSize: 12 }}>bundledPincodeResolver</code> or <code style={{ fontFamily: "var(--font-mono)", fontSize: 12 }}>bundledIFSCResolver</code> adds ~8KB (the popular dataset). If you use your own API resolver, <code style={{ fontFamily: "var(--font-mono)", fontSize: 12 }}>@bharat-ui/data</code> never enters your bundle.
+            </p>
           </div>
         </div>
 

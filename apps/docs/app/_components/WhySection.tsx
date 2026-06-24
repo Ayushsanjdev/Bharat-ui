@@ -13,7 +13,7 @@ const WHY_ITEMS = [
   },
   {
     title: "Zero network calls",
-    body: "259 IFSC entries (17 banks) and 711 pincodes (all 28 states) bundled. Instant lookup, works offline, no API dependency.",
+    body: "Validators are pure format checks — zero data cost. Opt-in bundled resolver (~8KB) for popular metros, or plug in your own API for full coverage.",
   },
   {
     title: "Consistent API",
