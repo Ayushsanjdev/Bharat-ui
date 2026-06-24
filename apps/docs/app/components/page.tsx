@@ -10,7 +10,7 @@ import { UPIButton } from "@bharat-ui/react/UPIButton";
 
 type PropRow = { name: string; type: string; default: string; desc: string };
 
-const PROP_TABLES: Record<string, PropRow[]> = {
+const PROP_TABLES: Record<"AmountInput" | "OTPInput" | "PANInput" | "PincodeInput" | "UPIButton", PropRow[]> = {
   AmountInput: [
     { name: "value", type: "number | undefined", default: "undefined", desc: "Controlled raw numeric value." },
     { name: "onChange", type: "(raw: number, formatted: string) => void", default: "—", desc: "Called with raw number and formatted string on change." },
