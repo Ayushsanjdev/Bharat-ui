@@ -554,6 +554,7 @@ export default function Page() {
 
       {/* Validators — dark */}
       <section
+        id="validators"
         style={{
           background: "#0A0A0A",
           padding: "72px 32px",
@@ -684,6 +685,7 @@ export default function Page() {
 
       {/* Components — light */}
       <section
+        id="components"
         style={{
           background: "#FAFAF9",
           padding: "72px 32px",
@@ -864,6 +866,7 @@ export default function Page() {
 
       {/* Why — dark */}
       <section
+        id="why"
         style={{
           background: "#0A0A0A",
           padding: "72px 32px",
@@ -993,6 +996,19 @@ export default function Page() {
             >
               npm install @bharat-ui/validators
             </code>
+          </div>
+          <div style={{ marginTop: 20 }}>
+            <Link
+              href="/docs"
+              style={{
+                fontSize: 14,
+                color: "#78350F",
+                textDecoration: "none",
+                fontWeight: 600,
+              }}
+            >
+              Read the docs →
+            </Link>
           </div>
         </div>
       </section>
