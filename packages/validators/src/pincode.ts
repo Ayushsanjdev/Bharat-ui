@@ -25,13 +25,9 @@ export function validatePincode(value: string): PincodeResult {
 
   const entry = PINCODE_DATA[cleaned];
 
-  if (!entry) {
-    return { valid: false, formatted: "", error: "Pincode not found" };
-  }
-
   return {
     valid: true,
     formatted: cleaned,
-    meta: { pincode: cleaned, ...entry },
+    ...(entry ? { meta: { pincode: cleaned, ...entry } } : {}),
   };
 }

@@ -23,17 +23,9 @@ export function validateIFSC(value: string): IFSCResult {
 
   const entry = IFSC_DATA[cleaned];
 
-  if (!entry) {
-    return {
-      valid: false,
-      formatted: "",
-      error: "IFSC not found in RBI database",
-    };
-  }
-
   return {
     valid: true,
     formatted: cleaned,
-    meta: { code: cleaned, ...entry },
+    ...(entry ? { meta: { code: cleaned, ...entry } } : {}),
   };
 }
