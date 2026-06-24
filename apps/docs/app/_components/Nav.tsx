@@ -97,7 +97,7 @@ export function Nav() {
             border: "0.5px solid var(--border)",
           }}
         >
-          v0.1.3
+          v0.1.4
         </span>
       </div>
 
