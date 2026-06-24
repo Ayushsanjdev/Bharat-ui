@@ -1,4 +1,4 @@
-import { PINCODE_DATA } from "@bharat-ui/data/pincode";
+import { PINCODE_DATA, PINCODE_PREFIX } from "@bharat-ui/data/pincode";
 import type { PincodeEntry } from "@bharat-ui/data/pincode";
 
 export interface PincodeResult {
@@ -16,18 +16,22 @@ export function validatePincode(value: string): PincodeResult {
   }
 
   if (cleaned.startsWith("0")) {
-    return {
-      valid: false,
-      formatted: "",
-      error: "Pincode cannot start with 0",
-    };
+    return { valid: false, formatted: "", error: "Pincode cannot start with 0" };
   }
 
+  // Tier 1: full dataset match
   const entry = PINCODE_DATA[cleaned];
+  if (entry) {
+    return { valid: true, formatted: cleaned, meta: { pincode: cleaned, ...entry } };
+  }
 
-  return {
-    valid: true,
-    formatted: cleaned,
-    ...(entry ? { meta: { pincode: cleaned, ...entry } } : {}),
-  };
+  // Tier 2: infer state + zone from 2-digit prefix
+  const prefix = cleaned.slice(0, 2);
+  const prefixEntry = PINCODE_PREFIX[prefix];
+  if (prefixEntry) {
+    return { valid: true, formatted: cleaned, meta: { pincode: cleaned, ...prefixEntry } };
+  }
+
+  // Tier 3: valid format, no data
+  return { valid: true, formatted: cleaned };
 }

@@ -1,9 +1,96 @@
 export interface PincodeEntry {
-  district: string;
+  district?: string;
   state: string;
   zone: string;
-  headPO: string;
+  headPO?: string;
 }
+
+export interface PincodePrefixEntry {
+  state: string;
+  zone: string;
+}
+
+export const PINCODE_PREFIX: Record<string, PincodePrefixEntry> = {
+  // Zone 1 — Northern
+  "11": { state: "Delhi", zone: "Northern" },
+  "12": { state: "Haryana", zone: "Northern" },
+  "13": { state: "Punjab", zone: "Northern" },
+  "14": { state: "Punjab", zone: "Northern" },
+  "15": { state: "Punjab", zone: "Northern" },
+  "16": { state: "Chandigarh", zone: "Northern" },
+  "17": { state: "Himachal Pradesh", zone: "Northern" },
+  "18": { state: "Jammu & Kashmir", zone: "Northern" },
+  "19": { state: "Jammu & Kashmir", zone: "Northern" },
+  // Zone 2 — Northern (UP / Uttarakhand)
+  "20": { state: "Uttar Pradesh", zone: "Northern" },
+  "21": { state: "Uttar Pradesh", zone: "Northern" },
+  "22": { state: "Uttar Pradesh", zone: "Northern" },
+  "23": { state: "Uttar Pradesh", zone: "Northern" },
+  "24": { state: "Uttarakhand", zone: "Northern" },
+  "25": { state: "Uttar Pradesh", zone: "Northern" },
+  "26": { state: "Uttar Pradesh", zone: "Northern" },
+  "27": { state: "Uttar Pradesh", zone: "Northern" },
+  "28": { state: "Uttar Pradesh", zone: "Northern" },
+  // Zone 3 — Western (Rajasthan / Gujarat)
+  "30": { state: "Rajasthan", zone: "Western" },
+  "31": { state: "Rajasthan", zone: "Western" },
+  "32": { state: "Rajasthan", zone: "Western" },
+  "33": { state: "Rajasthan", zone: "Western" },
+  "34": { state: "Rajasthan", zone: "Western" },
+  "36": { state: "Gujarat", zone: "Western" },
+  "37": { state: "Gujarat", zone: "Western" },
+  "38": { state: "Gujarat", zone: "Western" },
+  "39": { state: "Gujarat", zone: "Western" },
+  // Zone 4 — Western (Maharashtra / MP / Chhattisgarh / Goa)
+  "40": { state: "Maharashtra", zone: "Western" },
+  "41": { state: "Maharashtra", zone: "Western" },
+  "42": { state: "Maharashtra", zone: "Western" },
+  "43": { state: "Maharashtra", zone: "Western" },
+  "44": { state: "Maharashtra", zone: "Western" },
+  "45": { state: "Madhya Pradesh", zone: "Western" },
+  "46": { state: "Madhya Pradesh", zone: "Western" },
+  "47": { state: "Madhya Pradesh", zone: "Western" },
+  "48": { state: "Madhya Pradesh", zone: "Western" },
+  "49": { state: "Chhattisgarh", zone: "Western" },
+  // Zone 5 — Southern (AP / Telangana / Karnataka)
+  "50": { state: "Telangana", zone: "Southern" },
+  "51": { state: "Telangana", zone: "Southern" },
+  "52": { state: "Andhra Pradesh", zone: "Southern" },
+  "53": { state: "Andhra Pradesh", zone: "Southern" },
+  "56": { state: "Karnataka", zone: "Southern" },
+  "57": { state: "Karnataka", zone: "Southern" },
+  "58": { state: "Karnataka", zone: "Southern" },
+  "59": { state: "Karnataka", zone: "Southern" },
+  // Zone 6 — Southern (Tamil Nadu / Kerala / Puducherry)
+  "60": { state: "Tamil Nadu", zone: "Southern" },
+  "61": { state: "Tamil Nadu", zone: "Southern" },
+  "62": { state: "Tamil Nadu", zone: "Southern" },
+  "63": { state: "Tamil Nadu", zone: "Southern" },
+  "64": { state: "Tamil Nadu", zone: "Southern" },
+  "65": { state: "Tamil Nadu", zone: "Southern" },
+  "66": { state: "Kerala", zone: "Southern" },
+  "67": { state: "Kerala", zone: "Southern" },
+  "68": { state: "Kerala", zone: "Southern" },
+  "69": { state: "Kerala", zone: "Southern" },
+  // Zone 7 — Eastern (WB / NE / Odisha / Andaman)
+  "70": { state: "West Bengal", zone: "Eastern" },
+  "71": { state: "West Bengal", zone: "Eastern" },
+  "72": { state: "West Bengal", zone: "Eastern" },
+  "73": { state: "West Bengal", zone: "Eastern" },
+  "74": { state: "West Bengal", zone: "Eastern" },
+  "75": { state: "Odisha", zone: "Eastern" },
+  "76": { state: "Odisha", zone: "Eastern" },
+  "77": { state: "Odisha", zone: "Eastern" },
+  "78": { state: "Assam", zone: "Eastern" },
+  "79": { state: "Assam", zone: "Eastern" },
+  // Zone 8 — Eastern (Bihar / Jharkhand)
+  "80": { state: "Bihar", zone: "Eastern" },
+  "81": { state: "Bihar", zone: "Eastern" },
+  "82": { state: "Jharkhand", zone: "Eastern" },
+  "83": { state: "Jharkhand", zone: "Eastern" },
+  "84": { state: "Bihar", zone: "Eastern" },
+  "85": { state: "Bihar", zone: "Eastern" },
+};
 
 export const PINCODE_DATA: Record<string, PincodeEntry> = {
   // ── DELHI ────────────────────────────────────────────────────
