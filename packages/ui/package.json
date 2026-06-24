@@ -2,6 +2,13 @@
   "name": "@bharat-ui/react",
   "version": "0.1.0",
   "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ayushsanjdev/Bharat-ui",
+    "directory": "packages/ui"
+  },
+  "homepage": "https://github.com/Ayushsanjdev/Bharat-ui#readme",
+  "bugs": "https://github.com/Ayushsanjdev/Bharat-ui/issues",
   "exports": {
     "./AmountInput": "./src/AmountInput.tsx",
     "./OTPInput": "./src/OTPInput.tsx",

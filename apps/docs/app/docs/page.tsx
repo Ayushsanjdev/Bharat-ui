@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Nav } from "../_components/Nav";
+import { useIsMobile } from "../_components/useIsMobile";
 
 const PACKAGES = [
   {
@@ -142,14 +143,14 @@ function CodeBlock({ code }: { code: string }) {
     <div style={{ position: "relative" }}>
       <pre
         style={{
-          background: "#111",
-          border: "0.5px solid #1C1C1C",
+          background: "var(--surface)",
+          border: "0.5px solid var(--border)",
           borderRadius: 8,
           padding: "14px 16px",
           fontFamily: "var(--font-mono)",
           fontSize: 13,
           lineHeight: 1.8,
-          color: "#FAFAF9",
+          color: "var(--text)",
           overflowX: "auto",
           margin: 0,
           whiteSpace: "pre-wrap",
@@ -171,7 +172,7 @@ function CodeBlock({ code }: { code: string }) {
           fontSize: 11,
           padding: "3px 8px",
           borderRadius: 4,
-          background: "#1C1C1C",
+          background: "var(--accent-bg)",
           color: copied ? "#86EFAC" : "#78716C",
           border: "none",
           cursor: "pointer",
@@ -186,40 +187,41 @@ function CodeBlock({ code }: { code: string }) {
 }
 
 export default function DocsPage() {
+  const isMobile = useIsMobile();
   return (
-    <div style={{ fontFamily: "var(--font-sans)", background: "#0A0A0A", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "var(--font-sans)", background: "var(--bg)", minHeight: "100vh" }}>
       <Nav />
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "64px 32px 120px" }}>
+      <div style={{ maxWidth: 760, margin: "0 auto", padding: isMobile ? "40px 20px 80px" : "64px 32px 120px" }}>
 
         {/* Header */}
         <div style={{ marginBottom: 64 }}>
-          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#F59E0B", marginBottom: 12 }}>
+          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 12 }}>
             Documentation
           </div>
-          <h1 style={{ fontSize: 40, fontWeight: 800, color: "#FAFAF9", letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: 16 }}>
+          <h1 style={{ fontSize: isMobile ? 30 : 40, fontWeight: 800, color: "var(--text)", letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: 16 }}>
             Get up and running
           </h1>
-          <p style={{ fontSize: 15, color: "#78716C", lineHeight: 1.75, maxWidth: 560 }}>
+          <p style={{ fontSize: 15, color: "var(--text-muted)", lineHeight: 1.75, maxWidth: 560 }}>
             Two npm packages. Zero runtime dependencies. Everything you need to build Indian-context products — validators, formatters, and React components.
           </p>
         </div>
 
         {/* Packages */}
         <div style={{ marginBottom: 64 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 700, color: "#FAFAF9", marginBottom: 20, letterSpacing: "-0.01em" }}>
+          <h2 style={{ fontSize: 18, fontWeight: 700, color: "var(--text)", marginBottom: 20, letterSpacing: "-0.01em" }}>
             Packages
           </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 12 }}>
             {PACKAGES.map((pkg) => (
-              <div key={pkg.name} style={{ background: "#111", border: "0.5px solid #1C1C1C", borderRadius: 10, padding: 20 }}>
-                <code style={{ fontSize: 12, color: "#F59E0B", fontFamily: "var(--font-mono)", display: "block", marginBottom: 8 }}>
+              <div key={pkg.name} style={{ background: "var(--surface)", border: "0.5px solid var(--border)", borderRadius: 10, padding: 20 }}>
+                <code style={{ fontSize: 12, color: "var(--accent)", fontFamily: "var(--font-mono)", display: "block", marginBottom: 8 }}>
                   {pkg.name}
                 </code>
-                <p style={{ fontSize: 13, color: "#525252", lineHeight: 1.6, marginBottom: 16 }}>{pkg.desc}</p>
+                <p style={{ fontSize: 13, color: "var(--text-dim)", lineHeight: 1.6, marginBottom: 16 }}>{pkg.desc}</p>
                 <CodeBlock code={pkg.install} />
                 <div style={{ marginTop: 12, display: "flex", flexWrap: "wrap", gap: 6 }}>
                   {pkg.exports.map((e) => (
-                    <code key={e} style={{ fontSize: 10, padding: "2px 6px", borderRadius: 4, background: "#1C1C1C", color: "#78716C", fontFamily: "var(--font-mono)" }}>
+                    <code key={e} style={{ fontSize: 10, padding: "2px 6px", borderRadius: 4, background: "var(--accent-bg)", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
                       {e}
                     </code>
                   ))}
@@ -231,10 +233,10 @@ export default function DocsPage() {
 
         {/* Quick example */}
         <div style={{ marginBottom: 64 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 700, color: "#FAFAF9", marginBottom: 8, letterSpacing: "-0.01em" }}>
+          <h2 style={{ fontSize: 18, fontWeight: 700, color: "var(--text)", marginBottom: 8, letterSpacing: "-0.01em" }}>
             Quick example
           </h2>
-          <p style={{ fontSize: 14, color: "#525252", lineHeight: 1.7, marginBottom: 20 }}>
+          <p style={{ fontSize: 14, color: "var(--text-dim)", lineHeight: 1.7, marginBottom: 20 }}>
             Import any validator and call it directly. Every function returns a consistent shape.
           </p>
           <CodeBlock code={`import { validatePAN, validateIFSC, formatINR } from "@bharat-ui/validators";
@@ -253,14 +255,14 @@ formatINRCompact(1234567);  // "₹12.35L"`} />
         </div>
 
         {/* Divider */}
-        <div style={{ borderTop: "0.5px solid #1C1C1C", marginBottom: 64 }} />
+        <div style={{ borderTop: "0.5px solid var(--border)", marginBottom: 64 }} />
 
         {/* API Reference */}
         <div>
-          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#F59E0B", marginBottom: 8 }}>
+          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>
             @bharat-ui/validators
           </div>
-          <h2 style={{ fontSize: 18, fontWeight: 700, color: "#FAFAF9", marginBottom: 40, letterSpacing: "-0.01em" }}>
+          <h2 style={{ fontSize: 18, fontWeight: 700, color: "var(--text)", marginBottom: 40, letterSpacing: "-0.01em" }}>
             API Reference
           </h2>
 
@@ -268,49 +270,51 @@ formatINRCompact(1234567);  // "₹12.35L"`} />
             {API.map((fn) => (
               <div key={fn.name} id={fn.name}>
                 <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-                  <code style={{ fontSize: 16, fontWeight: 700, color: "#FAFAF9", fontFamily: "var(--font-mono)" }}>
+                  <code style={{ fontSize: 16, fontWeight: 700, color: "var(--text)", fontFamily: "var(--font-mono)" }}>
                     {fn.name}
                   </code>
-                  <div style={{ height: 1, flex: 1, background: "#1C1C1C" }} />
+                  <div style={{ height: 1, flex: 1, background: "var(--accent-bg)" }} />
                 </div>
 
-                <p style={{ fontSize: 14, color: "#78716C", lineHeight: 1.7, marginBottom: 20 }}>{fn.desc}</p>
+                <p style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.7, marginBottom: 20 }}>{fn.desc}</p>
 
                 <CodeBlock code={fn.signature} />
 
                 <div style={{ marginTop: 20, marginBottom: 20 }}>
-                  <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#525252", marginBottom: 10 }}>
+                  <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-dim)", marginBottom: 10 }}>
                     Parameters
                   </div>
+                  <div style={{ overflowX: "auto" }}>
                   <table style={{ width: "100%", borderCollapse: "collapse" }}>
                     <thead>
-                      <tr style={{ borderBottom: "0.5px solid #1C1C1C" }}>
+                      <tr style={{ borderBottom: "0.5px solid var(--border)" }}>
                         {["Name", "Type", "Description"].map((h) => (
-                          <th key={h} style={{ textAlign: "left", padding: "6px 12px", fontSize: 11, color: "#525252", fontWeight: 600, fontFamily: "var(--font-sans)" }}>{h}</th>
+                          <th key={h} style={{ textAlign: "left", padding: "6px 12px", fontSize: 11, color: "var(--text-dim)", fontWeight: 600, fontFamily: "var(--font-sans)" }}>{h}</th>
                         ))}
                       </tr>
                     </thead>
                     <tbody>
                       {fn.params.map((p) => (
-                        <tr key={p.name} style={{ borderBottom: "0.5px solid #1C1C1C" }}>
-                          <td style={{ padding: "10px 12px" }}><code style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "#F59E0B" }}>{p.name}</code></td>
+                        <tr key={p.name} style={{ borderBottom: "0.5px solid var(--border)" }}>
+                          <td style={{ padding: "10px 12px" }}><code style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--accent)" }}>{p.name}</code></td>
                           <td style={{ padding: "10px 12px" }}><code style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "#93C5FD" }}>{p.type}</code></td>
-                          <td style={{ padding: "10px 12px", fontSize: 13, color: "#78716C", lineHeight: 1.5 }}>{p.desc}</td>
+                          <td style={{ padding: "10px 12px", fontSize: 13, color: "var(--text-muted)", lineHeight: 1.5 }}>{p.desc}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
+                  </div>
                 </div>
 
                 <div style={{ marginBottom: 20 }}>
-                  <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#525252", marginBottom: 10 }}>
+                  <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-dim)", marginBottom: 10 }}>
                     Returns
                   </div>
                   <CodeBlock code={fn.returns} />
                 </div>
 
                 <div>
-                  <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#525252", marginBottom: 10 }}>
+                  <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-dim)", marginBottom: 10 }}>
                     Example
                   </div>
                   <CodeBlock code={`${fn.example.input}\n// ${fn.example.output}`} />

@@ -4,6 +4,10 @@
 
 PAN, Aadhaar, IFSC, UPI, OTP and ₹ formatting — built once, tested, typed, open source. Stop rebuilding the same validators in every project.
 
+[![npm](https://img.shields.io/npm/v/@bharat-ui/validators.svg?label=%40bharat-ui%2Fvalidators&color=orange)](https://www.npmjs.com/package/@bharat-ui/validators)
+[![npm](https://img.shields.io/npm/v/@bharat-ui/data.svg?label=%40bharat-ui%2Fdata&color=orange)](https://www.npmjs.com/package/@bharat-ui/data)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ---
 
 ## Packages

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Nav } from "../_components/Nav";
+import { useIsMobile } from "../_components/useIsMobile";
 import {
   validatePAN,
   validateAadhaar,
@@ -62,13 +63,14 @@ function ResultLine({ k, v }: { k: string; v: unknown }) {
   const display = typeof v === "object" && v !== null ? JSON.stringify(v) : JSON.stringify(v);
   return (
     <div style={{ display: "flex", gap: 8, fontSize: 13, lineHeight: 1.9, fontFamily: "var(--font-mono)" }}>
-      <span style={{ color: "#525252" }}>"{k}":</span>
+      <span style={{ color: "var(--text-dim)" }}>"{k}":</span>
       <span style={{ color }}>{display}</span>
     </div>
   );
 }
 
 function ValidatorsTab() {
+  const isMobile = useIsMobile();
   const [activeId, setActiveId] = React.useState<ValidatorId>("pan");
   const [value, setValue] = React.useState("ABCPE1234F");
   const result = value ? runValidator(activeId, value) : null;
@@ -80,10 +82,10 @@ function ValidatorsTab() {
   };
 
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
+    <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 24, alignItems: "start" }}>
       {/* Input panel */}
-      <div style={{ background: "#111", border: "0.5px solid #1C1C1C", borderRadius: 12, overflow: "hidden" }}>
-        <div style={{ display: "flex", overflowX: "auto", borderBottom: "0.5px solid #1C1C1C" }}>
+      <div style={{ background: "var(--surface)", border: "0.5px solid var(--border)", borderRadius: 12, overflow: "hidden" }}>
+        <div style={{ display: "flex", overflowX: "auto", borderBottom: "0.5px solid var(--border)" }}>
           {VALIDATORS.map((v) => (
             <button
               key={v.id}
@@ -106,7 +108,7 @@ function ValidatorsTab() {
           ))}
         </div>
         <div style={{ padding: 20 }}>
-          <div style={{ fontSize: 11, color: "#525252", marginBottom: 6, fontFamily: "var(--font-mono)" }}>
+          <div style={{ fontSize: 11, color: "var(--text-dim)", marginBottom: 6, fontFamily: "var(--font-mono)" }}>
             // input ({active.hint})
           </div>
           <input
@@ -116,10 +118,10 @@ function ValidatorsTab() {
             style={{
               width: "100%",
               background: "#0A0A0A",
-              border: "0.5px solid #1C1C1C",
+              border: "0.5px solid var(--border)",
               borderRadius: 6,
               padding: "8px 12px",
-              color: "#FAFAF9",
+              color: "var(--text)",
               fontFamily: "var(--font-mono)",
               fontSize: 14,
               outline: "none",
@@ -133,14 +135,14 @@ function ValidatorsTab() {
       </div>
 
       {/* Output panel */}
-      <div style={{ background: "#111", border: "0.5px solid #1C1C1C", borderRadius: 12, padding: 20, minHeight: 200 }}>
-        <div style={{ fontSize: 11, color: "#525252", marginBottom: 12, fontFamily: "var(--font-mono)" }}>// output</div>
+      <div style={{ background: "var(--surface)", border: "0.5px solid var(--border)", borderRadius: 12, padding: 20, minHeight: 200 }}>
+        <div style={{ fontSize: 11, color: "var(--text-dim)", marginBottom: 12, fontFamily: "var(--font-mono)" }}>// output</div>
         {result ? (
           Object.entries(result).map(([k, v]) =>
             v !== undefined && v !== "" ? <ResultLine key={k} k={k} v={v} /> : null
           )
         ) : (
-          <span style={{ color: "#525252", fontSize: 13, fontFamily: "var(--font-mono)" }}>// type a value above...</span>
+          <span style={{ color: "var(--text-dim)", fontSize: 13, fontFamily: "var(--font-mono)" }}>// type a value above...</span>
         )}
       </div>
     </div>
@@ -153,6 +155,7 @@ const COMPONENT_OPTIONS = ["PANInput", "PincodeInput", "AmountInput", "OTPInput"
 type ComponentName = typeof COMPONENT_OPTIONS[number];
 
 function ComponentsTab() {
+  const isMobile = useIsMobile();
   const [selected, setSelected] = React.useState<ComponentName>("PANInput");
   const [pan, setPan] = React.useState("");
   const [panValid, setPanValid] = React.useState(false);
@@ -225,13 +228,13 @@ function ComponentsTab() {
   }
 
   const stateLines: { label: string; value: string; color: string }[] = [
-    { label: "component", value: `"${selected}"`, color: "#F59E0B" },
+    { label: "component", value: `"${selected}"`, color: "var(--accent)" },
     ...(selected === "PANInput" ? [
-      { label: "value", value: `"${pan}"`, color: "#FAFAF9" },
+      { label: "value", value: `"${pan}"`, color: "var(--text)" },
       { label: "valid", value: String(panValid), color: panValid ? "#86EFAC" : "#F87171" },
     ] : []),
     ...(selected === "PincodeInput" ? [
-      { label: "value", value: `"${pincode}"`, color: "#FAFAF9" },
+      { label: "value", value: `"${pincode}"`, color: "var(--text)" },
       { label: "valid", value: String(pincodeValid), color: pincodeValid ? "#86EFAC" : "#F87171" },
     ] : []),
     ...(selected === "AmountInput" || selected === "UPIButton" ? [
@@ -241,7 +244,7 @@ function ComponentsTab() {
   ];
 
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
+    <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 24, alignItems: "start" }}>
       {/* Left: picker + component */}
       <div>
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 16 }}>
@@ -254,10 +257,10 @@ function ComponentsTab() {
                 fontSize: 11,
                 fontFamily: "var(--font-mono)",
                 border: "0.5px solid",
-                borderColor: selected === name ? "#F59E0B" : "#1C1C1C",
+                borderColor: selected === name ? "var(--accent)" : "var(--border)",
                 borderRadius: 6,
-                background: selected === name ? "#F59E0B22" : "transparent",
-                color: selected === name ? "#F59E0B" : "#525252",
+                background: selected === name ? "var(--accent-dim)" : "transparent",
+                color: selected === name ? "var(--accent)" : "var(--text-dim)",
                 cursor: "pointer",
                 transition: "all 0.15s",
               }}
@@ -266,18 +269,18 @@ function ComponentsTab() {
             </button>
           ))}
         </div>
-        <div style={{ background: "#111", border: "0.5px solid #1C1C1C", borderRadius: 12, padding: 24 }}>
+        <div style={{ background: "var(--surface)", border: "0.5px solid var(--border)", borderRadius: 12, padding: 24 }}>
           {renderComponent()}
         </div>
       </div>
 
       {/* Right: live state */}
-      <div style={{ background: "#111", border: "0.5px solid #1C1C1C", borderRadius: 12, padding: 20 }}>
-        <div style={{ fontSize: 11, color: "#525252", marginBottom: 16, fontFamily: "var(--font-mono)" }}>// live state</div>
+      <div style={{ background: "var(--surface)", border: "0.5px solid var(--border)", borderRadius: 12, padding: 20 }}>
+        <div style={{ fontSize: 11, color: "var(--text-dim)", marginBottom: 16, fontFamily: "var(--font-mono)" }}>// live state</div>
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {stateLines.map((line) => (
             <div key={line.label} style={{ fontFamily: "var(--font-mono)", fontSize: 13, lineHeight: 1.7 }}>
-              <span style={{ color: "#525252" }}>{line.label}: </span>
+              <span style={{ color: "var(--text-dim)" }}>{line.label}: </span>
               <span style={{ color: line.color }}>{line.value}</span>
             </div>
           ))}
@@ -290,28 +293,29 @@ function ComponentsTab() {
 // ── Page ────────────────────────────────────────────────────────
 
 export default function PlaygroundPage() {
+  const isMobile = useIsMobile();
   const [tab, setTab] = React.useState<"validators" | "components">("validators");
 
   return (
-    <div style={{ fontFamily: "var(--font-sans)", background: "#0A0A0A", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "var(--font-sans)", background: "var(--bg)", minHeight: "100vh" }}>
       <Nav />
-      <div style={{ maxWidth: 1040, margin: "0 auto", padding: "64px 32px 120px" }}>
+      <div style={{ maxWidth: 1040, margin: "0 auto", padding: isMobile ? "40px 20px 80px" : "64px 32px 120px" }}>
 
         {/* Header */}
         <div style={{ marginBottom: 48 }}>
-          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#F59E0B", marginBottom: 12 }}>
+          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 12 }}>
             Playground
           </div>
-          <h1 style={{ fontSize: 40, fontWeight: 800, color: "#FAFAF9", letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: 16 }}>
+          <h1 style={{ fontSize: isMobile ? 30 : 40, fontWeight: 800, color: "var(--text)", letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: 16 }}>
             Try it live
           </h1>
-          <p style={{ fontSize: 15, color: "#78716C", lineHeight: 1.75 }}>
+          <p style={{ fontSize: 15, color: "var(--text-muted)", lineHeight: 1.75 }}>
             Test validators with real inputs and interact with components in real time.
           </p>
         </div>
 
         {/* Tabs */}
-        <div style={{ display: "flex", gap: 4, marginBottom: 36, borderBottom: "0.5px solid #1C1C1C" }}>
+        <div style={{ display: "flex", gap: 4, marginBottom: 36, borderBottom: "0.5px solid var(--border)" }}>
           {(["validators", "components"] as const).map((t) => (
             <button
               key={t}
@@ -321,9 +325,9 @@ export default function PlaygroundPage() {
                 fontSize: 13,
                 fontFamily: "var(--font-sans)",
                 border: "none",
-                borderBottom: tab === t ? "2px solid #F59E0B" : "2px solid transparent",
+                borderBottom: tab === t ? "2px solid var(--accent)" : "2px solid transparent",
                 background: "transparent",
-                color: tab === t ? "#FAFAF9" : "#525252",
+                color: tab === t ? "var(--text)" : "var(--text-dim)",
                 cursor: "pointer",
                 fontWeight: tab === t ? 600 : 400,
                 transition: "all 0.15s",
