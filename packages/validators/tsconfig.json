@@ -1,0 +1,16 @@
+{
+  "extends": "@bharat-ui/typescript-config/base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+  },
+  "include": [
+    "src/aadhaar.ts",
+    "src/pan.ts",
+    "src/format.ts",
+    "src/ifsc.ts",
+    "src/pincode.ts",
+    "src/index.ts",
+  ],
+  "exclude": ["node_modules", "dist"],
+}

@@ -1,0 +1,28 @@
+{
+  "name": "@bharat-ui/data",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "exports": {
+    "./ifsc": {
+      "import": "./dist/ifsc.js",
+      "types": "./dist/ifsc.d.ts"
+    },
+    "./pincode": {
+      "import": "./dist/pincode.js",
+      "types": "./dist/pincode.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "check-types": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@bharat-ui/typescript-config": "*",
+    "typescript": "5.9.2"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ]
+}

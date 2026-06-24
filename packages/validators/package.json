@@ -1,0 +1,29 @@
+{
+  "name": "@bharat-ui/validators",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "check-types": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@bharat-ui/data": "0.1.0"
+  },
+  "devDependencies": {
+    "@bharat-ui/typescript-config": "*",
+    "typescript": "5.9.2"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ]
+}

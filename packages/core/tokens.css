@@ -1,0 +1,14 @@
+:root {
+  --bui-color-primary: #b45309;
+  --bui-color-primary-subtle: #fef3c7;
+  --bui-radius-md: 8px;
+  --bui-radius-lg: 12px;
+
+  /* Indic typography */
+  --bui-line-height-latin: 1.5;
+  --bui-line-height-devanagari: 1.8;
+  --bui-line-height-tamil: 1.75;
+
+  --bui-font-devanagari: "Noto Sans Devanagari", "Hind", sans-serif;
+  --bui-font-latin: "Inter", system-ui, sans-serif;
+}
