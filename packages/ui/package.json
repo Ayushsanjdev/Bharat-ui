@@ -27,6 +27,10 @@
     "eslint": "^9.39.1",
     "typescript": "5.9.2"
   },
+  "files": [
+    "src",
+    "README.md"
+  ],
   "peerDependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

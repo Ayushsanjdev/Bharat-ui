@@ -1,160 +1,186 @@
-# Turborepo starter
+# Bharat UI
 
-This Turborepo starter is maintained by the Turborepo core team.
+**The missing UI layer for Indian products.**
 
-## Using this example
+PAN, Aadhaar, IFSC, UPI, OTP and ₹ formatting — built once, tested, typed, open source. Stop rebuilding the same validators in every project.
 
-Run the following command:
+---
 
-```sh
-npx create-turbo@latest
+## Packages
+
+| Package | Version | Description |
+|---|---|---|
+| [`@bharat-ui/validators`](./packages/validators) | `0.1.0` | Zero-dep validators for PAN, Aadhaar, IFSC, Pincode and INR formatting |
+| [`@bharat-ui/react`](./packages/ui) | `0.1.0` | React components built on top of the validators |
+| [`@bharat-ui/data`](./packages/data) | `0.1.0` | Bundled RBI IFSC dataset and India Post pincode dataset |
+
+---
+
+## Quick start
+
+```bash
+npm install @bharat-ui/validators
 ```
 
-## What's inside?
+```ts
+import { validatePAN, validateIFSC, formatINR, formatINRCompact } from '@bharat-ui/validators';
 
-This Turborepo includes the following packages/apps:
+validatePAN('ABCPE1234F');
+// { valid: true, formatted: 'ABCPE1234F', meta: { type: 'Individual', typeCode: 'P' } }
 
-### Apps and Packages
+validateIFSC('SBIN0001234');
+// { valid: true, formatted: 'SBIN0001234', meta: { code: 'SBIN0001234', bank: 'State Bank of India', ... } }
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@bharat-ui/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@bharat-ui/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@bharat-ui/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo build
+formatINR(1234567);         // '₹12,34,567'
+formatINRCompact(1234567);  // '₹12.35L'
 ```
 
-Without global `turbo`, use your package manager:
+For React components:
 
-```sh
-cd my-turborepo
-npx turbo build
-bun dlx turbo build
-bun exec turbo build
+```bash
+npm install @bharat-ui/react
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+```tsx
+import { PANInput } from '@bharat-ui/react/PANInput';
+import { AmountInput } from '@bharat-ui/react/AmountInput';
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+function MyForm() {
+  const [pan, setPan] = React.useState('');
+  const [amount, setAmount] = React.useState<number>();
 
-```sh
-turbo build --filter=docs
+  return (
+    <>
+      <PANInput label="PAN number" value={pan} onChange={(v) => setPan(v)} />
+      <AmountInput label="Loan amount" value={amount} onChange={(raw) => setAmount(raw)} />
+    </>
+  );
+}
 ```
 
-Without global `turbo`:
+---
 
-```sh
-npx turbo build --filter=docs
-bun exec turbo build --filter=docs
-bun exec turbo build --filter=docs
+## `@bharat-ui/validators`
+
+Zero dependencies. TypeScript-first. Works in React, React Native and Node.js.
+
+### Functions
+
+| Function | Description |
+|---|---|
+| `validatePAN(pan)` | PAN format + taxpayer type inference |
+| `validateAadhaar(aadhaar)` | 12-digit Verhoeff checksum + masked output |
+| `validateIFSC(ifsc)` | Format check + bundled RBI dataset |
+| `validatePincode(pincode)` | 6-digit check + bundled India Post dataset |
+| `formatINR(amount)` | Indian comma notation with ₹ symbol |
+| `formatINRCompact(amount)` | Lakh / crore compact notation |
+| `parseINR(formatted)` | Strip ₹ and commas, return raw number |
+
+### Return shapes
+
+Every validator returns a consistent shape: `{ valid, formatted, error?, meta? }`.
+
+```ts
+// validatePAN
+{ valid: boolean; formatted: string; error?: string; meta?: { type: string; typeCode: string } }
+
+// validateAadhaar
+{ valid: boolean; formatted: string; masked?: string; error?: string }
+
+// validateIFSC
+{
+  valid: boolean; formatted: string; error?: string;
+  meta?: { code: string; bank: string; branch: string; address: string; city: string; state: string; contact: string }
+}
+
+// validatePincode
+{
+  valid: boolean; formatted: string; error?: string;
+  meta?: { pincode: string; district: string; state: string; zone: string; headPO: string }
+}
+
+// formatINR(1234567)        → '₹12,34,567'
+// formatINRCompact(1234567) → '₹12.35L'
+// parseINR('₹12,34,567')   → 1234567
 ```
 
-### Develop
+---
 
-To develop all apps and packages, run the following command:
+## `@bharat-ui/react`
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+React components that wire up the validators, handle formatting, and manage input state. Requires React 19.
 
-```sh
-cd my-turborepo
-turbo dev
+| Component | Description |
+|---|---|
+| `<AmountInput />` | ₹ input with live Indian number formatting |
+| `<OTPInput />` | Box-per-digit OTP entry with auto-advance and resend timer |
+| `<PANInput />` | Auto-uppercase PAN entry with taxpayer type badge |
+| `<PincodeInput />` | Pincode entry with live district/state lookup |
+| `<UPIButton />` | UPI deep-link payment buttons (GPay, PhonePe, Paytm, BHIM) |
+
+Import each component from its own subpath:
+
+```ts
+import { AmountInput }  from '@bharat-ui/react/AmountInput';
+import { OTPInput }     from '@bharat-ui/react/OTPInput';
+import { PANInput }     from '@bharat-ui/react/PANInput';
+import { PincodeInput } from '@bharat-ui/react/PincodeInput';
+import { UPIButton }    from '@bharat-ui/react/UPIButton';
 ```
 
-Without global `turbo`, use your package manager:
+### Key props
 
-```sh
-cd my-turborepo
-npx turbo dev
-bun exec turbo dev
-bun exec turbo dev
+**`<AmountInput />`** — `value: number | undefined`, `onChange: (raw: number, formatted: string) => void`
+
+**`<OTPInput />`** — `length: 4 | 6`, `onComplete: (otp: string) => void`, `resendAfterSeconds: number`
+
+**`<PANInput />`** — `value: string`, `onChange: (value: string, valid: boolean) => void`, `showTypeBadge: boolean`
+
+**`<PincodeInput />`** — `value: string`, `onChange: (value: string, valid: boolean) => void`, `showCascade: boolean`
+
+**`<UPIButton />`** — `vpa: string`, `amount: number`, `merchantName: string`, `transactionNote?: string`
+
+---
+
+## Why Bharat UI
+
+- **Indian number system** — ₹12,34,567 not ₹1,234,567. Lakh and crore notation built in.
+- **Zero network calls** — IFSC and pincode datasets are bundled. Instant lookup, works offline.
+- **Verified checksums** — Aadhaar uses the Verhoeff algorithm. PAN infers taxpayer type from the 4th character.
+- **Consistent API** — every validator returns `{ valid, formatted, error?, meta? }`. Learn once, use everywhere.
+- **TypeScript-first** — full types for every input and return shape.
+- **Tree-shakeable** — import only what you need. `@bharat-ui/validators` has zero runtime dependencies.
+
+---
+
+## Monorepo structure
+
+```
+bharat-ui/
+├── apps/
+│   └── docs/          # Next.js docs site and landing page
+├── packages/
+│   ├── validators/    # @bharat-ui/validators
+│   ├── ui/            # @bharat-ui/react
+│   └── data/          # @bharat-ui/data (IFSC + Pincode datasets)
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+## Development
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+```bash
+# Install dependencies
+bun install
 
-```sh
-turbo dev --filter=web
+# Start dev server
+bun run dev
+
+# Build all packages
+bun run build
+
+# Run validator tests
+cd packages/validators && bun test
 ```
 
-Without global `turbo`:
+---
 
-```sh
-npx turbo dev --filter=web
-bun exec turbo dev --filter=web
-bun exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-bun exec turbo login
-bun exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-bun exec turbo link
-bun exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
-# Bharat-ui
+MIT © Bharat UI contributors
