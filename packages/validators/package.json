@@ -1,6 +1,6 @@
 {
   "name": "@bharat-ui/validators",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "repository": {
     "type": "git",
@@ -23,7 +23,7 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@bharat-ui/data": "0.1.0"
+    "@bharat-ui/data": "0.1.1"
   },
   "devDependencies": {
     "@bharat-ui/typescript-config": "*",

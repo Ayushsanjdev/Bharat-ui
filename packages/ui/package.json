@@ -1,6 +1,6 @@
 {
   "name": "@bharat-ui/react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "repository": {
     "type": "git",
@@ -16,14 +16,42 @@
     "./PincodeInput": "./src/PincodeInput.tsx",
     "./UPIButton": "./src/UPIButton.tsx"
   },
+  "publishConfig": {
+    "exports": {
+      "./AmountInput": {
+        "import": "./dist/AmountInput.js",
+        "types": "./dist/AmountInput.d.ts"
+      },
+      "./OTPInput": {
+        "import": "./dist/OTPInput.js",
+        "types": "./dist/OTPInput.d.ts"
+      },
+      "./PANInput": {
+        "import": "./dist/PANInput.js",
+        "types": "./dist/PANInput.d.ts"
+      },
+      "./PincodeInput": {
+        "import": "./dist/PincodeInput.js",
+        "types": "./dist/PincodeInput.d.ts"
+      },
+      "./UPIButton": {
+        "import": "./dist/UPIButton.js",
+        "types": "./dist/UPIButton.d.ts"
+      }
+    },
+    "files": [
+      "dist",
+      "README.md"
+    ]
+  },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "check-types": "tsc --noEmit",
     "build": "tsc"
   },
   "dependencies": {
-    "@bharat-ui/validators": "0.1.0",
-    "@bharat-ui/data": "0.1.0"
+    "@bharat-ui/validators": "0.1.1",
+    "@bharat-ui/data": "0.1.1"
   },
   "devDependencies": {
     "@bharat-ui/eslint-config": "*",
