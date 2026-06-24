@@ -140,7 +140,7 @@ function ValidatorsTab() {
             v !== undefined && v !== "" ? <ResultLine key={k} k={k} v={v} /> : null
           )
         ) : (
-          <span style={{ color: "#4C4C4C", fontSize: 13, fontFamily: "var(--font-mono)" }}>// type a value above...</span>
+          <span style={{ color: "#525252", fontSize: 13, fontFamily: "var(--font-mono)" }}>// type a value above...</span>
         )}
       </div>
     </div>

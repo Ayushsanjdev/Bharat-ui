@@ -49,8 +49,8 @@ const API = [
     ],
     returns: `{
   valid: boolean
-  formatted?: string        // "2341 2341 2346"
-  masked?: string           // "XXXX XXXX 2346"
+  formatted: string         // "2341 2341 2346" (empty string on failure)
+  masked?: string           // "XXXX XXXX 2346" (only on valid result)
   error?: string
 }`,
     example: {
@@ -67,12 +67,17 @@ const API = [
     ],
     returns: `{
   valid: boolean
-  formatted?: string        // "SBIN0001234"
-  bank?: string
-  branch?: string
-  city?: string
-  state?: string
+  formatted: string         // "SBIN0001234" (empty string on failure)
   error?: string
+  meta?: {
+    code: string            // "SBIN0001234"
+    bank: string
+    branch: string
+    address: string
+    city: string
+    state: string
+    contact: string
+  }
 }`,
     example: {
       input: 'validateIFSC("SBIN0001234")',
@@ -88,15 +93,19 @@ const API = [
     ],
     returns: `{
   valid: boolean
-  district?: string
-  state?: string
-  zone?: string
-  headOffice?: string
+  formatted: string         // "390001" (empty string on failure)
   error?: string
+  meta?: {
+    pincode: string
+    district: string
+    state: string
+    zone: string
+    headPO: string
+  }
 }`,
     example: {
       input: 'validatePincode("390001")',
-      output: '{ valid: true, district: "Vadodara", state: "Gujarat", zone: "Western", headOffice: "Vadodara HO" }',
+      output: '{ valid: true, formatted: "390001", meta: { pincode: "390001", district: "Vadodara", state: "Gujarat", zone: "Western", headPO: "Vadodara HO" } }',
     },
   },
   {
