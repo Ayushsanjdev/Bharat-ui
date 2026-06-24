@@ -14,9 +14,9 @@ PAN, Aadhaar, IFSC, UPI, OTP and ₹ formatting — built once, tested, typed, o
 
 | Package | Version | Description |
 |---|---|---|
-| [`@bharat-ui/validators`](./packages/validators) | `0.1.2` | Zero-dep validators for PAN, Aadhaar, IFSC, Pincode and INR formatting |
-| [`@bharat-ui/react`](./packages/ui) | `0.1.2` | React components built on top of the validators |
-| [`@bharat-ui/data`](./packages/data) | `0.1.2` | Bundled RBI IFSC dataset and India Post pincode dataset |
+| [`@bharat-ui/validators`](./packages/validators) | `0.1.3` | Zero-dep validators for PAN, Aadhaar, IFSC, Pincode and INR formatting |
+| [`@bharat-ui/react`](./packages/ui) | `0.1.3` | React components built on top of the validators |
+| [`@bharat-ui/data`](./packages/data) | `0.1.3` | Bundled RBI IFSC dataset and India Post pincode dataset |
 
 ---
 
