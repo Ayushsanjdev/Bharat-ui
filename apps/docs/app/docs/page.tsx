@@ -62,7 +62,7 @@ const API = [
   {
     name: "validateIFSC",
     signature: "validateIFSC(ifsc: string): IFSCResult",
-    desc: "Validates an 11-character IFSC code against the bundled RBI dataset. Returns full bank and branch metadata — no network calls.",
+    desc: "Validates an 11-character IFSC code against the bundled dataset of 259 branches across 17 major banks (SBI, HDFC, ICICI, Axis, PNB, BoB, Canara, Kotak and more). Returns full bank and branch metadata — no network calls.",
     params: [
       { name: "ifsc", type: "string", desc: "IFSC code. Case-insensitive." },
     ],
@@ -88,7 +88,7 @@ const API = [
   {
     name: "validatePincode",
     signature: "validatePincode(pincode: string): PincodeResult",
-    desc: "Validates a 6-digit Indian pincode against the bundled India Post dataset. Returns district, state, zone and head post office — no network calls.",
+    desc: "Validates a 6-digit Indian pincode against the bundled dataset of 711 pincodes covering all 28 states and key UTs. Returns district, state, zone and head post office — no network calls.",
     params: [
       { name: "pincode", type: "string", desc: "6-digit pincode." },
     ],

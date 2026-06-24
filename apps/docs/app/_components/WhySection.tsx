@@ -13,7 +13,7 @@ const WHY_ITEMS = [
   },
   {
     title: "Zero network calls",
-    body: "IFSC and pincode datasets are bundled. Instant lookup, works offline, no API dependency.",
+    body: "259 IFSC entries (17 banks) and 711 pincodes (all 28 states) bundled. Instant lookup, works offline, no API dependency.",
   },
   {
     title: "Consistent API",

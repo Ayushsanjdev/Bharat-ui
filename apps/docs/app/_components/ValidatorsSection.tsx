@@ -18,13 +18,13 @@ const VALIDATOR_CARDS = [
   {
     icon: "🏦",
     title: "IFSC",
-    desc: "Format check + RBI dataset. Returns bank, branch, city, state.",
+    desc: "259 branches across 17 major banks — SBI, HDFC, ICICI, Axis and more. Returns bank, branch, city, state. No API calls.",
     tag: "validateIFSC()",
   },
   {
     icon: "📮",
     title: "Pincode",
-    desc: "India Post dataset. Resolves district, state, zone, head PO instantly.",
+    desc: "711 pincodes covering all 28 states and key UTs. Resolves district, state, zone, head PO instantly. No API calls.",
     tag: "validatePincode()",
   },
   {
