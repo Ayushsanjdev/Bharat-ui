@@ -18,6 +18,9 @@ PAN, Aadhaar, IFSC, UPI, OTP and ₹ formatting — built once, tested, typed, o
 | [`@bharat-ui/react`](./packages/ui) | `0.1.5` | React components with resolver-based IFSC and Pincode lookup |
 | [`@bharat-ui/data`](./packages/data) | `0.1.4` | Optional bundled popular dataset for offline IFSC and Pincode lookup |
 
+## Demo
+<img width="1440" height="786" alt="Screenshot 2026-06-25 at 10 18 22 AM" src="https://github.com/user-attachments/assets/bf44a8bc-99f4-4018-880b-aef86118180d" />
+
 ---
 
 ## Quick start
